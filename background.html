@@ -1,0 +1,56 @@
+<script>
+var seltext = null;
+document.addEventListener('mouseup',function(event)
+{
+    var sel = window.getSelection().toString();
+     
+    if(sel.length)
+        chrome.extension.sendRequest({'message':'setText','data': sel},function(response){})
+    //var jax = new XMLHttpRequest();
+    var url = "https://search-production.ratemyprofessors.com/solr/rmp/select/?solrformat=true&rows=2&wt=json&q="+name+"+AND+schoolname_t:The University of Texas at Dallas";
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        // JSON.parse does not evaluate the attacker's scripts.
+        var resp = JSON.parse(xhr.responseText);
+        console.log(resp);
+      }
+    }
+    xhr.send();
+})
+ /*
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse)
+{
+    switch(request.message)
+    {
+        case 'setText':
+            window.seltext = request.data
+        break;
+         
+        default:
+            sendResponse({data: 'Invalid arguments'});
+        break;
+    }
+});
+ 
+ 
+function savetext(info,tab)
+{
+    var jax = new XMLHttpRequest();
+    var url = "https://search-production.ratemyprofessors.com/solr/rmp/select/?solrformat=true&rows=2&wt=json&q="+name+"+AND+schoolname_t:The University of Texas at Dallas";
+    jax.open("POST",url);
+    jax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    jax.send("text="+seltext);
+    jax.onreadystatechange = function() { if(jax.readyState==4) { alert(jax.responseText);  }}
+}
+ 
+var contexts = ["selection"];
+for (var i = 0; i < contexts.length; i++)
+{
+    var context = contexts[i];
+    chrome.contextMenus.create({"title": "Send to Server", "contexts":[context], "onclick": savetext});  
+}
+ */
+</script>
